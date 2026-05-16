@@ -3,7 +3,7 @@
 RESTful API untuk sistem manajemen anime dengan fitur CRUD data master, transaksional, dan statistik.
 
 ## Tech Stack
-- Node.js + Express
+- Node.js
 - MySQL
 - Joi (Validation)
 
