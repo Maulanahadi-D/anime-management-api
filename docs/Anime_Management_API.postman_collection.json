@@ -1,0 +1,146 @@
+{
+  "info": {
+    "name": "Anime Management API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/api/health"
+      }
+    },
+    {
+      "name": "Anime",
+      "item": [
+        {
+          "name": "Get All Anime",
+          "request": {"method": "GET", "url": "{{base_url}}/api/anime"}
+        },
+        {
+          "name": "Get Anime by ID",
+          "request": {"method": "GET", "url": "{{base_url}}/api/anime/1"}
+        },
+        {
+          "name": "Create Anime",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/anime",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Solo Leveling\",\n  \"episodes\": 12,\n  \"studio\": \"A-1 Pictures\",\n  \"release_year\": 2024,\n  \"genre_ids\": [1, 5, 11]\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Anime",
+          "request": {
+            "method": "PUT",
+            "url": "{{base_url}}/api/anime/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Demon Slayer: Kimetsu no Yaiba\",\n  \"episodes\": 26,\n  \"studio\": \"Ufotable\",\n  \"release_year\": 2019\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Anime",
+          "request": {"method": "DELETE", "url": "{{base_url}}/api/anime/11"}
+        }
+      ]
+    },
+    {
+      "name": "Genres",
+      "item": [
+        {
+          "name": "Get All Genres",
+          "request": {"method": "GET", "url": "{{base_url}}/api/genres"}
+        },
+        {
+          "name": "Create Genre",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/genres",
+            "body": {"mode": "raw", "raw": "{\n  \"genre_name\": \"Isekai\"\n}"}
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get All Users",
+          "request": {"method": "GET", "url": "{{base_url}}/api/users"}
+        },
+        {
+          "name": "Get User by ID",
+          "request": {"method": "GET", "url": "{{base_url}}/api/users/1"}
+        },
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/users",
+            "body": {"mode": "raw", "raw": "{\n  \"username\": \"newfan\",\n  \"email\": \"newfan@email.com\",\n  \"password\": \"secret123\"\n}"}
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reviews",
+      "item": [
+        {
+          "name": "Get All Reviews",
+          "request": {"method": "GET", "url": "{{base_url}}/api/reviews"}
+        },
+        {
+          "name": "Create Review",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/reviews",
+            "body": {"mode": "raw", "raw": "{\n  \"user_id\": 1,\n  \"anime_id\": 10,\n  \"rating\": 9,\n  \"comment\": \"Amazing anime!\"\n}"}
+          }
+        }
+      ]
+    },
+    {
+      "name": "Watchlists",
+      "item": [
+        {
+          "name": "Get User Watchlist",
+          "request": {"method": "GET", "url": "{{base_url}}/api/watchlists/user/1"}
+        },
+        {
+          "name": "Add to Watchlist",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/watchlists",
+            "body": {"mode": "raw", "raw": "{\n  \"user_id\": 1,\n  \"anime_id\": 9,\n  \"status\": \"Plan to Watch\"\n}"}
+          }
+        }
+      ]
+    },
+    {
+      "name": "Statistics",
+      "item": [
+        {
+          "name": "Get All Statistics",
+          "request": {"method": "GET", "url": "{{base_url}}/api/stats"}
+        },
+        {
+          "name": "Get User Statistics",
+          "request": {"method": "GET", "url": "{{base_url}}/api/stats/users/1"}
+        },
+        {
+          "name": "Get Anime Statistics",
+          "request": {"method": "GET", "url": "{{base_url}}/api/stats/anime/1"}
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {"key": "base_url", "value": "http://localhost:3000"}
+  ]
+}
