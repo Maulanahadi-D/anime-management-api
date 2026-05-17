@@ -1,12 +1,66 @@
 # Anime Management API
 
-RESTful API untuk sistem manajemen anime dengan fitur CRUD data master, transaksional, dan statistik.
+REST API sederhana untuk manajemen Anime Management System.
+
+## Features
+- CRUD Anime
+- CRUD Genres
+- CRUD Users
+- CRUD Reviews
+- CRUD Watchlists
+- Statistik data transaksional
 
 ## Tech Stack
-- Node.js
+- Node.js + Express
 - MySQL
-- Joi (Validation)
+- Postman
 
+## API Endpoints
+
+### Anime
+- GET /api/anime
+- GET /api/anime/:id
+- POST /api/anime
+- PUT /api/anime/:id
+- DELETE /api/anime/:id
+
+### Genres
+- GET /api/genres
+- GET /api/genres/:id
+- POST /api/genres
+- PUT /api/genres/:id
+- DELETE /api/genres/:id
+
+### Users
+- GET /api/users
+- GET /api/users/:id
+- POST /api/users
+- PUT /api/users/:id
+- DELETE /api/users/:id
+
+### Reviews
+- GET /api/reviews
+- POST /api/reviews
+- PUT /api/reviews/:id
+- DELETE /api/reviews/:id
+
+### Watchlists
+- GET /api/watchlists
+- GET /api/watchlists/user/:user_id
+- POST /api/watchlists
+- PUT /api/watchlists/:id
+- DELETE /api/watchlists/:id
+
+### Statistics
+- GET /api/stats
+- GET /api/stats/users/:user_id
+- GET /api/stats/anime/:anime_id
+
+## Documentation
+Dokumentasi API tersedia pada folder:
+
+```text
+/docs/Anime_Management_API.postman_collection.json
 ## Cara Menjalankan
 
 ```bash
