@@ -1,0 +1,782 @@
+{
+  "info": {
+    "_postman_id": "b357732e-1465-405a-9cde-5a5d15893f7b",
+    "name": "Anime Management API",
+    "description": "API untuk sistem manajemen anime dengan fitur CRUD data master (Anime, Genres, Users), CRUD data transaksional (Reviews, Watchlists), dan Statistik.\n\n## Cara Penggunaan\n\nSetiap request menggunakan Base URL:\n\n> {{BASE_URL}}/api \n  \n\n## Environment Variables\n\n- BASE_URL: [http://localhost:3000](http://localhost:3000)\n    \n\n## Endpoint Groups\n\n1. **Anime** - CRUD data anime\n    \n2. **Genres** - CRUD data genre\n    \n3. **Users** - CRUD data user\n    \n4. **Reviews** - CRUD data review\n    \n5. **Watchlists** - CRUD data watchlist\n    \n6. **Statistics** - Data statistik",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "53758336",
+    "_collection_link": "https://go.postman.co/collection/53758336-b357732e-1465-405a-9cde-5a5d15893f7b?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const jsonData = pm.response.json();",
+                  "if (pm.response.code === 200 && jsonData.token) {",
+                  "    pm.collectionVariables.set('token', jsonData.token);",
+                  "    console.log('Token tersimpan:', jsonData.token);",
+                  "} else if (pm.response.code !== 200) {",
+                  "    console.log('Login gagal:', jsonData.message);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"animefan1\",\n    \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/auth/login",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "Endpoint autentikasi (tidak perlu token)"
+    },
+    {
+      "name": "Health Check",
+      "item": [
+        {
+          "name": "health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/api/health",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "health"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "Pengecekan status API (public)"
+    },
+    {
+      "name": "Anime",
+      "item": [
+        {
+          "name": "get-all-anime",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/api/anime",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "anime"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-anime-by-id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/api/anime/1",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "anime",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create-anime",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"Solo Leveling\",\n    \"episodes\": 12,\n    \"studio\": \"A-1 Pictures\",\n    \"release_year\": 2024,\n    \"genre_ids\": [1, 5, 11]\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/anime",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "anime"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update-anime",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"Demon Slayer: Kimetsu no Yaiba\",\n    \"episodes\": 26,\n    \"studio\": \"Ufotable\",\n    \"release_year\": 2019\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/anime/1",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "anime",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete-anime",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/api/anime/11",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "anime",
+                "11"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "CRUD Anime (wajib token)"
+    },
+    {
+      "name": "Genres",
+      "item": [
+        {
+          "name": "get-all-genres",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/api/genres",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "genres"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-genre-by-id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/api/genres/1",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "genres",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create-genre",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"genre_name\": \"Isekai\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/genres",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "genres"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update-genre",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"genre_name\": \"Isekai Fantasy\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/genres/13",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "genres",
+                "13"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete-genre",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/api/genres/13",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "genres",
+                "13"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "CRUD Genres (wajib token)"
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "get-all-users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/api/users",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-user-by-id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/api/users/1",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create-user",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"new_anime_fan\",\n    \"email\": \"newfan@email.com\",\n    \"password\": \"secret123\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/users",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update-user",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"updated_username\",\n    \"email\": \"updated@email.com\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/users/4",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "4"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete-user",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/api/users/4",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "4"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "CRUD Users (wajib token)"
+    },
+    {
+      "name": "Reviews",
+      "item": [
+        {
+          "name": "get-all-reviews",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/api/reviews?anime_id=1",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "reviews"
+              ],
+              "query": [
+                {
+                  "key": "anime_id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create-review",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"user_id\": 1,\n    \"anime_id\": 10,\n    \"rating\": 9,\n    \"comment\": \"Naruto adalah anime terbaik!\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/reviews",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "reviews"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update-review",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"rating\": 10,\n    \"comment\": \"Naruto really is the best anime ever!\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/reviews/14",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "reviews",
+                "14"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete-review",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/api/reviews/14",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "reviews",
+                "14"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "CRUD Reviews (wajib token)"
+    },
+    {
+      "name": "Watchlists",
+      "item": [
+        {
+          "name": "get-all-watchlists",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/api/watchlists?user_id=1",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "watchlists"
+              ],
+              "query": [
+                {
+                  "key": "user_id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-user-watchlist",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/api/watchlists/user/1",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "watchlists",
+                "user",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "add-to-watchlist",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"user_id\": 1,\n    \"anime_id\": 9,\n    \"status\": \"Plan to Watch\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/watchlists",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "watchlists"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update-watchlist-status",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"status\": \"Completed\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/watchlists/17",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "watchlists",
+                "17"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "remove-from-watchlist",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/api/watchlists/17",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "watchlists",
+                "17"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "CRUD Watchlists (wajib token)"
+    },
+    {
+      "name": "Statistics",
+      "item": [
+        {
+          "name": "get-all-statistics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/api/stats",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "stats"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-user-statistics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/api/stats/users/1",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "stats",
+                "users",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-anime-statistics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/api/stats/anime/1",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "stats",
+                "anime",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "Statistik (wajib token)"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "BASE_URL",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}

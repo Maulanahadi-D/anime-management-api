@@ -3,6 +3,8 @@ const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 
+const authenticateToken = require('./middleware/auth'); // middleware autentikasi
+const authRoutes = require('./routes/auth');           // route login/logout
 const animeRoutes = require('./routes/anime');
 const genreRoutes = require('./routes/genres');
 const userRoutes = require('./routes/users');
@@ -24,19 +26,18 @@ const limiter = rateLimit({
     max: 100
 });
 app.use('/api/', limiter);
+app.get('/api/health', (req, res) => {
+    res.json({ status: 'OK', message: 'Anime Management API is running' });
+});
+app.use('/api/auth', authRoutes);
+app.use(authenticateToken);
 
-// Routes
 app.use('/api/anime', animeRoutes);
 app.use('/api/genres', genreRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/watchlists', watchlistRoutes);
 app.use('/api/stats', statsRoutes);
-
-// Health check
-app.get('/api/health', (req, res) => {
-    res.json({ status: 'OK', message: 'Anime Management API is running' });
-});
 
 // 404 handler
 app.use((req, res) => {

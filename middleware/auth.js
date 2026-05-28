@@ -1,60 +1,33 @@
-// Simple API key authentication (optional)
-const API_KEY = process.env.API_KEY || 'anime-management-secret-key-2024';
+const jwt = require('jsonwebtoken');
+const db = require('../db/database');
 
-const authenticate = (req, res, next) => {
-    const apiKey = req.headers['x-api-key'];
-    
-    if (!apiKey || apiKey !== API_KEY) {
-        return res.status(401).json({
-            success: false,
-            error: 'Unauthorized: Invalid or missing API key'
-        });
+const JWT_SECRET = process.env.JWT_SECRET || 'rahasia_anime_2024';
+
+const authenticateToken = async (req, res, next) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (!token) {
+        return res.status(401).json({ success: false, message: 'Token tidak disertakan' });
     }
-    
-    next();
-};
 
-// Basic logging middleware
-const logger = (req, res, next) => {
-    const start = Date.now();
-    res.on('finish', () => {
-        const duration = Date.now() - start;
-        console.log(`${req.method} ${req.originalUrl} - ${res.statusCode} - ${duration}ms`);
-    });
-    next();
-};
+    try {
+        const decoded = jwt.verify(token, JWT_SECRET);
+        
+        // Opsional: cek token di database (agar bisa di-revoke saat logout)
+        const [rows] = await db.query(
+            'SELECT * FROM auth_tokens WHERE token = ? AND (expires_at IS NULL OR expires_at > NOW())',
+            [token]
+        );
+        if (rows.length === 0) {
+            return res.status(401).json({ success: false, message: 'Token tidak valid atau sudah kadaluarsa' });
+        }
 
-// Error handler middleware
-const errorHandler = (err, req, res, next) => {
-    console.error('Error:', err.message);
-    
-    if (err.code === 'ER_DUP_ENTRY') {
-        return res.status(409).json({
-            success: false,
-            error: 'Duplicate entry: Record already exists'
-        });
+        req.user = { id: decoded.userId, username: decoded.username };
+        next();
+    } catch (err) {
+        return res.status(403).json({ success: false, message: 'Token tidak sah' });
     }
-    
-    if (err.code === 'ER_NO_REFERENCED_ROW') {
-        return res.status(400).json({
-            success: false,
-            error: 'Invalid reference: Foreign key constraint failed'
-        });
-    }
-    
-    res.status(500).json({
-        success: false,
-        error: 'Internal server error',
-        message: process.env.NODE_ENV === 'development' ? err.message : undefined
-    });
 };
 
-// Not found middleware
-const notFound = (req, res) => {
-    res.status(404).json({
-        success: false,
-        error: `Cannot ${req.method} ${req.originalUrl} - Route not found`
-    });
-};
-
-module.exports = { authenticate, logger, errorHandler, notFound };
+module.exports = authenticateToken;
